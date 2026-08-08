@@ -90,7 +90,7 @@ async function initBackend() {
 
 function applySettings() {
   const map = {
-    brandName:'store_name', brandTagline:'tagline', topbarOne:'topbar_one', topbarTwo:'topbar_two', heroEyebrow:'hero_eyebrow', heroTitle:'hero_title', heroAccent:'hero_accent', heroSubtitle:'hero_subtitle',
+    brandTagline:'tagline', topbarOne:'topbar_one', topbarTwo:'topbar_two', heroEyebrow:'hero_eyebrow', heroTitle:'hero_title', heroAccent:'hero_accent', heroSubtitle:'hero_subtitle',
     statDesigns:'stat_designs', statYears:'stat_years', statRating:'stat_rating', categoryIntro:'category_intro', customTitle:'custom_title', customText:'custom_text', storyTitle:'story_title', storyText:'story_text', footerDescription:'footer_description', addressText:'address', womenCategoryLabel:'women_category_label', womenCategoryTitle:'women_category_title', girlsCategoryLabel:'girls_category_label', girlsCategoryTitle:'girls_category_title', customCategoryLabel:'custom_category_label', customCategoryTitle:'custom_category_title', testimonial1Name:'testimonial_1_name', testimonial1Text:'testimonial_1_text', testimonial2Name:'testimonial_2_name', testimonial2Text:'testimonial_2_text', testimonial3Name:'testimonial_3_name', testimonial3Text:'testimonial_3_text'
   };
   Object.entries(map).forEach(([id,key]) => { if ($(id)) $(id).textContent = settings[key] ?? ''; });
@@ -102,8 +102,8 @@ function applySettings() {
   if ($('footerLogo')) { $('footerLogo').src = brandLogo; $('footerLogo').alt = settings.store_name || 'RIDAA Store'; }
   const showBrandText = settings.show_brand_text !== false && String(settings.show_brand_text) !== 'false';
   const brand = document.querySelector('.brand'); if (brand) brand.classList.toggle('logo-only', !showBrandText);
-  const desktopLogoWidth = Math.max(80, Math.min(420, Number(settings.logo_width_desktop) || 240));
-  const mobileLogoWidth = Math.max(70, Math.min(280, Number(settings.logo_width_mobile) || 165));
+  const desktopLogoWidth = Math.max(60, Math.min(1000, Number(settings.logo_width_desktop) || 240));
+  const mobileLogoWidth = Math.max(50, Math.min(600, Number(settings.logo_width_mobile) || 165));
   document.documentElement.style.setProperty('--brand-logo-width', `${desktopLogoWidth}px`);
   document.documentElement.style.setProperty('--brand-logo-mobile-width', `${mobileLogoWidth}px`);
   const favicon = $('siteFavicon'); if (favicon) favicon.href = settings.favicon_url || settings.logo_url || 'assets/logo.svg';
