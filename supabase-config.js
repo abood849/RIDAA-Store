@@ -2,6 +2,6 @@
 // Paste your Supabase Project URL and Publishable/Anon key here.
 // NEVER put a service_role key in this file.
 window.RIDAA_SUPABASE = {
-  url: 'https://YOUR_PROJECT.supabase.co',
-  anonKey: 'YOUR_PUBLISHABLE_OR_ANON_KEY'
+  url: 'https://lufambmoujihrxykgpoj.supabase.co',
+  anonKey: 'sb_publishable_y17O1117VRYplwKbm3xgTQ_BAOkM29B'
 };
