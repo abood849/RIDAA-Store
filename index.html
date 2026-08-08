@@ -46,7 +46,67 @@
 
   <aside class="cart-drawer" id="cartDrawer"><div class="drawer-header"><div><span>سلة المشتريات</span><small id="cartSubtitle">0 منتجات</small></div><button id="closeCart">×</button></div><div class="cart-items" id="cartItems"></div><div class="cart-empty" id="cartEmpty"><div>🛍️</div><h3>سلتك فارغة</h3><p>أضيفي بعض القطع المميزة لتظهر هنا.</p></div><div class="cart-footer" id="cartFooter"><div class="subtotal"><span>المجموع</span><strong id="cartTotal">0 د.م</strong></div><button class="button primary full" id="checkoutBtn">إتمام الطلب عبر واتساب</button><small>تكلفة الشحن تُحسب عند تأكيد الطلب.</small></div></aside>
   <div class="overlay" id="overlay"></div>
-  <div class="modal" id="productModal"><button class="modal-close" id="modalClose">×</button><div class="modal-image" id="modalImage"></div><div class="modal-content"><span class="eyebrow" id="modalCategory"></span><h2 id="modalTitle"></h2><div class="modal-price" id="modalPrice"></div><p id="modalDescription"></p><div class="option-row"><label>المقاس</label><div class="size-options"><button>S</button><button class="active">M</button><button>L</button><button>XL</button></div></div><div class="option-row"><label for="modalQty">الكمية</label><input id="modalQty" type="number" min="1" value="1"/></div><button class="button primary full" id="modalAdd">أضيفي إلى السلة</button></div></div>
+  <section class="quick-view-modal" id="productModal" aria-modal="true" role="dialog" aria-label="عرض سريع للمنتج">
+    <button class="modal-close" id="modalClose" aria-label="إغلاق">×</button>
+    <div class="quick-gallery-pane">
+      <div class="quick-image-stage">
+        <img id="quickMainImage" alt="">
+        <button class="gallery-arrow prev" id="quickPrev" aria-label="الصورة السابقة">‹</button>
+        <button class="gallery-arrow next" id="quickNext" aria-label="الصورة التالية">›</button>
+        <span class="image-counter" id="quickImageCounter"></span>
+      </div>
+      <div class="gallery-dots" id="quickDots"></div>
+    </div>
+    <div class="quick-info-pane">
+      <span class="eyebrow" id="modalCategory"></span>
+      <h2 id="modalTitle"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <p id="modalDescription"></p>
+      <div class="quick-color"><span>اللون</span><div><i id="quickColorSwatch"></i><b id="quickColorName"></b></div></div>
+      <div class="option-row"><label>المقاس</label><div class="size-options" id="quickSizes"></div></div>
+      <div class="qty-row"><label>الكمية</label><div class="qty-stepper"><button type="button" onclick="changeQty('modalQty',-1)">−</button><input id="modalQty" type="number" min="1" value="1"><button type="button" onclick="changeQty('modalQty',1)">+</button></div></div>
+      <button class="button primary full" id="modalAdd">أضيفي إلى السلة</button>
+      <button class="details-link-button" id="openFullDetails">عرض التفاصيل الكاملة ودليل المقاسات ←</button>
+    </div>
+  </section>
+
+  <section class="product-detail-overlay" id="productDetail" aria-modal="true" role="dialog" aria-label="تفاصيل المنتج">
+    <div class="detail-shell">
+      <button class="detail-close" id="detailClose" aria-label="إغلاق">×</button>
+      <div class="detail-topline"><span id="detailCategory"></span><span>RIDAA / تفاصيل المنتج</span></div>
+      <div class="detail-layout">
+        <div class="detail-gallery">
+          <div class="detail-thumbs" id="detailThumbs"></div>
+          <div class="detail-main-wrap">
+            <div class="detail-zoom-stage" id="detailZoomStage">
+              <img id="detailMainImage" alt="">
+              <div class="zoom-lens" id="zoomLens"></div>
+              <span class="zoom-tip">مرري المؤشر للتكبير</span>
+            </div>
+            <button class="detail-gallery-arrow prev" id="detailPrev" aria-label="الصورة السابقة">‹</button>
+            <button class="detail-gallery-arrow next" id="detailNext" aria-label="الصورة التالية">›</button>
+            <div class="zoom-result" id="zoomResult" aria-hidden="true"></div>
+          </div>
+        </div>
+        <aside class="detail-info">
+          <h1 id="detailTitle"></h1>
+          <div class="detail-price" id="detailPrice"></div>
+          <p class="detail-description" id="detailDescription"></p>
+          <ul class="detail-bullets" id="detailBullets"></ul>
+          <div class="detail-option"><label>اللون</label><div class="detail-color-value"><i id="detailColorSwatch"></i><strong id="detailColorName"></strong></div></div>
+          <div class="detail-option"><label>المقاس</label><div class="size-options detail-sizes" id="detailSizes"></div></div>
+          <div class="detail-buy-row"><div class="qty-stepper"><button type="button" onclick="changeQty('detailQty',-1)">−</button><input id="detailQty" type="number" min="1" value="1"><button type="button" onclick="changeQty('detailQty',1)">+</button></div><button class="button primary" id="detailAdd">أضيفي إلى السلة</button></div>
+          <div class="size-guide-card">
+            <div class="size-guide-heading"><div><span>دليل المقاسات</span><h3>مقاسات القطعة بالسنتيمتر</h3></div><small>يمكن للإدارة تعديل الرسم والقياسات لكل منتج</small></div>
+            <div class="size-guide-grid">
+              <div class="size-guide-visual placeholder"><img id="sizeGuideImage" alt="رسم دليل المقاسات"><div class="guide-placeholder"><b>رسم القطعة</b><span>أضيفي صورة الرسم من لوحة الإدارة</span></div></div>
+              <div class="size-guide-table-wrap"><table id="sizeGuideTable"></table></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
   <div class="toast" id="toast"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>

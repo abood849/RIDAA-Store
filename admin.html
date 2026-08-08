@@ -66,7 +66,67 @@
   </main>
 </div>
 
-<dialog id="productDialog" class="product-dialog"><form id="productForm" method="dialog"><div class="dialog-head"><h2 id="productDialogTitle">إضافة منتج</h2><button type="button" id="closeProductDialog">×</button></div><input type="hidden" name="id"><div class="form-grid"><label>اسم المنتج<input name="name" required></label><label>الفئة<select name="category"><option value="women">نسائي</option><option value="girls">بناتي</option></select></label><label>اسم الفئة الظاهر<input name="label" value="نسائي"></label><label>السعر د.م<input name="price" type="number" step="0.01" required></label><label>السعر القديم<input name="old_price" type="number" step="0.01"></label><label>شارة المنتج<input name="badge" placeholder="جديد / مميز"></label><label>ترتيب الظهور<input name="sort_order" type="number" value="0"></label><label class="checks"><input name="is_new" type="checkbox"> وصل حديثًا</label><label class="checks"><input name="active" type="checkbox" checked> ظاهر في المتجر</label><label class="full">رابط الصورة<input name="image_url"></label><label class="full">أو ارفع صورة<input id="productImageFile" type="file" accept="image/*"></label><label class="full">الوصف<textarea name="description"></textarea></label></div><div class="dialog-actions"><button type="button" id="cancelProduct">إلغاء</button><button class="primary" type="submit">حفظ المنتج</button></div></form></dialog>
+<dialog id="productDialog" class="product-dialog">
+  <form id="productForm" method="dialog">
+    <div class="dialog-head"><div><span class="admin-eyebrow">إدارة الكتالوج</span><h2 id="productDialogTitle">إضافة منتج</h2></div><button type="button" id="closeProductDialog">×</button></div>
+    <input type="hidden" name="id">
+
+    <section class="editor-section">
+      <div class="editor-section-head"><h3>المعلومات الأساسية</h3><p>الاسم والسعر والفئة والنصوص التي تظهر للعميل.</p></div>
+      <div class="form-grid">
+        <label>اسم المنتج<input name="name" required></label>
+        <label>الفئة<select name="category"><option value="women">نسائي</option><option value="girls">بناتي</option></select></label>
+        <label>اسم الفئة الظاهر<input name="label" value="نسائي"></label>
+        <label>السعر د.م<input name="price" type="number" step="0.01" required></label>
+        <label>السعر القديم<input name="old_price" type="number" step="0.01"></label>
+        <label>شارة المنتج<input name="badge" placeholder="جديد / مميز"></label>
+        <label>ترتيب الظهور<input name="sort_order" type="number" value="0"></label>
+        <label class="checks"><input name="is_new" type="checkbox"> وصل حديثًا</label>
+        <label class="checks"><input name="active" type="checkbox" checked> ظاهر في المتجر</label>
+        <label class="full">الوصف المختصر<textarea name="description" placeholder="وصف يظهر في العرض السريع وصفحة المنتج"></textarea></label>
+        <label class="full">نقاط تفاصيل المنتج <small>اكتب كل نقطة في سطر منفصل</small><textarea name="detail_bullets" placeholder="خامة ناعمة ومريحة
+قصة واسعة وانسيابية
+مناسب للاستخدام اليومي"></textarea></label>
+      </div>
+    </section>
+
+    <section class="editor-section">
+      <div class="editor-section-head"><h3>صور المنتج ومعرض الزوايا</h3><p>الصورة الرئيسية للبطاقة، ثم صور إضافية للتقليب داخل Quick View وصفحة التفاصيل.</p></div>
+      <div class="form-grid">
+        <label class="full">رابط الصورة الرئيسية<input name="image_url"></label>
+        <label class="full upload-field">أو ارفع صورة رئيسية<input id="productImageFile" type="file" accept="image/*"></label>
+        <label class="full">روابط صور المعرض <small>رابط واحد في كل سطر</small><textarea name="gallery_urls" rows="5" placeholder="https://...
+https://..."></textarea></label>
+        <label class="full upload-field">إضافة عدة صور للمعرض دفعة واحدة<input id="productGalleryFiles" type="file" accept="image/*" multiple></label>
+      </div>
+    </section>
+
+    <section class="editor-section">
+      <div class="editor-section-head"><h3>اللون والمقاسات</h3><p>تظهر في العرض السريع وفي صفحة المنتج.</p></div>
+      <div class="form-grid">
+        <label>اسم اللون<input name="color_name" placeholder="أسود / لافندر / زيتي"></label>
+        <label>لون الدائرة<input name="color_hex" type="color" value="#390e27"></label>
+        <label class="full">المقاسات المتوفرة <small>افصل بينها بفاصلة</small><input name="sizes" placeholder="M, L, XL, 2XL"></label>
+      </div>
+    </section>
+
+    <section class="editor-section size-guide-editor">
+      <div class="editor-section-head"><h3>دليل المقاسات والرسم</h3><p>يمكنك تغيير صورة رسم القطعة وكل قيمة في الجدول بشكل مستقل.</p></div>
+      <div class="form-grid">
+        <label class="full">رابط صورة رسم المقاسات<input name="size_guide_image_url"></label>
+        <label class="full upload-field">أو ارفع صورة الرسم<input id="sizeGuideImageFile" type="file" accept="image/*"></label>
+      </div>
+      <div class="measure-editor">
+        <div class="measure-row measure-head"><span>الرمز</span><span>اسم القياس</span><span>M</span><span>L</span><span>XL</span><span>2XL</span></div>
+        <div class="measure-row"><input name="measure_a_key" value="A"><input name="measure_a_label" value="محيط الصدر"><input name="measure_a_m"><input name="measure_a_l"><input name="measure_a_xl"><input name="measure_a_2xl"></div>
+        <div class="measure-row"><input name="measure_b_key" value="B"><input name="measure_b_label" value="الطول الكامل"><input name="measure_b_m"><input name="measure_b_l"><input name="measure_b_xl"><input name="measure_b_2xl"></div>
+        <div class="measure-row"><input name="measure_c_key" value="C"><input name="measure_c_label" value="طول الكم"><input name="measure_c_m"><input name="measure_c_l"><input name="measure_c_xl"><input name="measure_c_2xl"></div>
+      </div>
+    </section>
+
+    <div class="dialog-actions"><button type="button" id="cancelProduct">إلغاء</button><button class="primary" type="submit">حفظ كل التعديلات</button></div>
+  </form>
+</dialog>
 
 <div id="toast" class="admin-toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="admin.js"></script>
