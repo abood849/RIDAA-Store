@@ -734,3 +734,130 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .product-photo,.product-hover-actions,.hover-action,.quick-view-modal,.product-detail-overlay { transition:none!important; }
 }
+
+
+/* ===== RIDAA v5.1 — clearer size guide + reliable back navigation ===== */
+.detail-shell { overflow: visible; }
+.detail-back {
+  position: absolute;
+  z-index: 40;
+  top: 17px;
+  right: 18px;
+  height: 44px;
+  padding: 0 17px;
+  border: 1px solid #e1d6da;
+  border-radius: 999px;
+  background: rgba(255,255,255,.97);
+  color: #390e27;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(57,14,39,.08);
+  pointer-events: auto;
+  transition: transform .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+.detail-back:hover { background:#390e27; color:#fff; transform:translateY(-1px); box-shadow:0 12px 28px rgba(57,14,39,.2); }
+.detail-back:focus-visible,.detail-close:focus-visible { outline:3px solid rgba(169,127,61,.4); outline-offset:3px; }
+.detail-topline { padding-right: 165px; }
+
+.size-guide-heading { align-items:center; }
+.size-guide-grid { grid-template-columns: minmax(240px,.8fr) minmax(0,1.2fr); }
+.size-guide-table-wrap {
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid #e5d8de;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(57,14,39,.04);
+}
+#sizeGuideTable {
+  width: 100%;
+  min-width: 0 !important;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  direction: ltr;
+}
+#sizeGuideTable th,#sizeGuideTable td {
+  padding: 15px 7px;
+  border-bottom: 1px solid #eadfe4;
+  border-left: 1px solid #eee4e8;
+  text-align: center;
+  font-size: 13px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#sizeGuideTable tr:last-child th,#sizeGuideTable tr:last-child td { border-bottom:0; }
+#sizeGuideTable th:last-child,#sizeGuideTable td:last-child { border-left:0; }
+#sizeGuideTable thead th {
+  background: linear-gradient(180deg,#fbf6f8,#f6eef2);
+  color:#5b3f4d;
+  font-size:14px;
+  font-weight:900;
+}
+#sizeGuideTable .measure-head { width: 31%; direction: rtl; }
+#sizeGuideTable tbody th {
+  width:31%;
+  min-width:0;
+  text-align:center;
+  background:#fcf9fa;
+  direction:rtl;
+}
+#sizeGuideTable tbody th b.measure-key {
+  display:inline-grid;
+  place-items:center;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:#f0e2e8;
+  color:#6c3752;
+  font-size:12px;
+  margin-bottom:5px;
+}
+#sizeGuideTable tbody th span {
+  display:block;
+  font-size:11px;
+  line-height:1.45;
+  color:#6f5e66;
+  margin-top:0;
+}
+#sizeGuideTable td { color:#2f2027; font-weight:700; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 1100px) {
+  .detail-shell { overflow:hidden; }
+  .size-guide-grid { grid-template-columns: 1fr; }
+  .size-guide-visual { min-height: 280px; }
+}
+@media (max-width: 840px) {
+  .detail-back {
+    position: sticky;
+    top: 10px;
+    right: auto;
+    margin: 10px 14px 0 auto;
+    width: max-content;
+    z-index: 60;
+  }
+  .detail-close { position: sticky !important; top:10px !important; left:14px !important; float:left; z-index:61 !important; margin:10px 0 0 14px; }
+  .detail-topline { clear:both; padding:12px 18px 14px; }
+  .size-guide-card { margin-top:20px; padding-top:20px; }
+  .size-guide-heading { margin-bottom:12px; }
+  .size-guide-heading h3 { font-size:17px; }
+  .size-guide-table-wrap { overflow:hidden !important; }
+  #sizeGuideTable { width:100% !important; min-width:0 !important; table-layout:fixed; }
+  #sizeGuideTable .measure-head,#sizeGuideTable tbody th { width:30%; }
+  #sizeGuideTable th,#sizeGuideTable td { padding:11px 3px; font-size:11px; }
+  #sizeGuideTable thead th { font-size:11px; }
+  #sizeGuideTable tbody th b.measure-key { width:23px; height:23px; font-size:10px; }
+  #sizeGuideTable tbody th span { font-size:9.5px; }
+}
+@media (max-width: 420px) {
+  .detail-back { height:40px; padding:0 12px; font-size:12px; }
+  .detail-close { width:40px !important; height:40px !important; }
+  #sizeGuideTable .measure-head,#sizeGuideTable tbody th { width:32%; }
+  #sizeGuideTable th,#sizeGuideTable td { padding:10px 2px; font-size:10.5px; }
+  #sizeGuideTable thead th { font-size:10.5px; }
+  #sizeGuideTable tbody th span { font-size:9px; }
+}

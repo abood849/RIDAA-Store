@@ -35,6 +35,7 @@ let quickGalleryIndex = 0;
 let detailGalleryIndex = 0;
 let selectedQuickSize = '';
 let selectedDetailSize = '';
+let detailHistoryActive = false;
 let cart = JSON.parse(localStorage.getItem('ridaa-cart') || '[]');
 let supabaseClient = null;
 
@@ -225,8 +226,8 @@ function buildSizeGuide(product) {
   const rows = product.size_guide_rows?.length ? product.size_guide_rows : DEFAULT_SIZE_ROWS;
   const sizes = product.sizes?.length ? product.sizes : ['M','L','XL','2XL'];
   const head = sizes.map(s=>`<th>${safeText(s)}</th>`).join('');
-  const body = rows.map(row=>`<tr><th><b>${safeText(row.key || '')}</b><span>${safeText(row.label || '')}</span></th>${sizes.map(s=>`<td>${safeText(row[s] ?? '—')}</td>`).join('')}</tr>`).join('');
-  $('sizeGuideTable').innerHTML = `<thead><tr><th>القياس</th>${head}</tr></thead><tbody>${body}</tbody>`;
+  const body = rows.map(row=>`<tr><th><b class="measure-key">${safeText(row.key || '')}</b><span>${safeText(row.label || '')}</span></th>${sizes.map(s=>`<td>${safeText(row[s] ?? '—')}</td>`).join('')}</tr>`).join('');
+  $('sizeGuideTable').innerHTML = `<thead><tr><th class="measure-head">القياس</th>${head}</tr></thead><tbody>${body}</tbody>`;
   const guide = $('sizeGuideImage');
   if (product.size_guide_image_url) {
     guide.src = product.size_guide_image_url;
@@ -257,6 +258,10 @@ function openProductDetail(id) {
   $('productDetail').classList.add('show');
   $('overlay').classList.add('show');
   document.body.style.overflow='hidden';
+  if (!detailHistoryActive) {
+    history.pushState({ ridaaProductDetail: true, productId: Number(selectedProduct.id) }, '', `#product-${selectedProduct.id}`);
+    detailHistoryActive = true;
+  }
   setTimeout(()=> $('detailClose').focus(),80);
 }
 window.openProductDetail = openProductDetail;
@@ -264,8 +269,30 @@ window.openQuickView = openQuickView;
 window.quickShop = quickShop;
 
 function closeQuickView(){ $('productModal').classList.remove('show'); }
-function closeProductDetail(){ $('productDetail').classList.remove('show'); $('zoomResult').classList.remove('show'); $('zoomLens').classList.remove('show'); }
-function closePanels(){ $('cartDrawer').classList.remove('open'); closeQuickView(); closeProductDetail(); $('overlay').classList.remove('show'); document.body.style.overflow=''; }
+function finishProductDetailClose(){
+  $('productDetail').classList.remove('show');
+  $('zoomResult').classList.remove('show');
+  $('zoomLens').classList.remove('show');
+  detailHistoryActive = false;
+  if (!$('productModal').classList.contains('show') && !$('cartDrawer').classList.contains('open')) $('overlay').classList.remove('show');
+  document.body.style.overflow = ($('productModal').classList.contains('show') || $('cartDrawer').classList.contains('open')) ? 'hidden' : '';
+}
+function closeProductDetail(fromHistory=false){
+  const isOpen = $('productDetail').classList.contains('show');
+  if (!isOpen) return;
+  if (!fromHistory && detailHistoryActive && history.state?.ridaaProductDetail) {
+    history.back();
+    return;
+  }
+  finishProductDetailClose();
+}
+function closePanels(){
+  $('cartDrawer').classList.remove('open');
+  closeQuickView();
+  if ($('productDetail').classList.contains('show')) { closeProductDetail(); return; }
+  $('overlay').classList.remove('show');
+  document.body.style.overflow='';
+}
 
 function addToCart(id,qty=1,size=''){
   const p=products.find(x=>Number(x.id)===Number(id));
@@ -320,7 +347,7 @@ function bindUI(){
   document.querySelectorAll('[data-scroll]').forEach(card=>card.addEventListener('click',()=>document.querySelector(card.dataset.scroll).scrollIntoView({behavior:'smooth'})));
   $('sortSelect').addEventListener('change',renderProducts);
   $('cartToggle').addEventListener('click',openCart); $('closeCart').addEventListener('click',closePanels); $('overlay').addEventListener('click',closePanels);
-  $('modalClose').addEventListener('click',closePanels); $('detailClose').addEventListener('click',closePanels);
+  $('modalClose').addEventListener('click',closePanels); $('detailClose').addEventListener('click',()=>closeProductDetail()); $('detailBack').addEventListener('click',()=>closeProductDetail());
   $('quickPrev').addEventListener('click',()=>setQuickImage(quickGalleryIndex-1)); $('quickNext').addEventListener('click',()=>setQuickImage(quickGalleryIndex+1));
   $('detailPrev').addEventListener('click',()=>setDetailImage(detailGalleryIndex-1)); $('detailNext').addEventListener('click',()=>setDetailImage(detailGalleryIndex+1));
   $('modalAdd').addEventListener('click',()=>{const qty=Math.max(1,Number($('modalQty').value)||1);addToCart(selectedProduct.id,qty,selectedQuickSize);closePanels();openCart();});
@@ -332,6 +359,7 @@ function bindUI(){
   $('customOrderBtn').addEventListener('click',()=>{const msg='مرحبًا RIDAA، أريد طلب تصميم وتفصيل خاص.';window.open(`https://wa.me/${String(settings.whatsapp||'').replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`,'_blank');});
   $('newsletterForm').addEventListener('submit',e=>{e.preventDefault();showToast('شكرًا لكِ، تم الاشتراك');e.target.reset();});
   window.addEventListener('scroll',()=>$('header').classList.toggle('scrolled',window.scrollY>20));
+  window.addEventListener('popstate',()=>{ if ($('productDetail').classList.contains('show')) closeProductDetail(true); });
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanels();if($('productModal').classList.contains('show')){if(e.key==='ArrowLeft')setQuickImage(quickGalleryIndex+1);if(e.key==='ArrowRight')setQuickImage(quickGalleryIndex-1);}else if($('productDetail').classList.contains('show')){if(e.key==='ArrowLeft')setDetailImage(detailGalleryIndex+1);if(e.key==='ArrowRight')setDetailImage(detailGalleryIndex-1);}});
   const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}}),{threshold:.1});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
   bindZoom();

@@ -73,6 +73,7 @@
   <section class="product-detail-overlay" id="productDetail" aria-modal="true" role="dialog" aria-label="تفاصيل المنتج">
     <div class="detail-shell">
       <button class="detail-close" id="detailClose" aria-label="إغلاق">×</button>
+      <button class="detail-back" id="detailBack" type="button" aria-label="العودة إلى المتجر">← <span>العودة للمتجر</span></button>
       <div class="detail-topline"><span id="detailCategory"></span><span>RIDAA / تفاصيل المنتج</span></div>
       <div class="detail-layout">
         <div class="detail-gallery">
@@ -97,7 +98,7 @@
           <div class="detail-option"><label>المقاس</label><div class="size-options detail-sizes" id="detailSizes"></div></div>
           <div class="detail-buy-row"><div class="qty-stepper"><button type="button" onclick="changeQty('detailQty',-1)">−</button><input id="detailQty" type="number" min="1" value="1"><button type="button" onclick="changeQty('detailQty',1)">+</button></div><button class="button primary" id="detailAdd">أضيفي إلى السلة</button></div>
           <div class="size-guide-card">
-            <div class="size-guide-heading"><div><span>دليل المقاسات</span><h3>مقاسات القطعة بالسنتيمتر</h3></div><small>يمكن للإدارة تعديل الرسم والقياسات لكل منتج</small></div>
+            <div class="size-guide-heading"><div><span>دليل المقاسات</span><h3>مقاسات القطعة بالسنتيمتر</h3></div></div>
             <div class="size-guide-grid">
               <div class="size-guide-visual placeholder"><img id="sizeGuideImage" alt="رسم دليل المقاسات"><div class="guide-placeholder"><b>رسم القطعة</b><span>أضيفي صورة الرسم من لوحة الإدارة</span></div></div>
               <div class="size-guide-table-wrap"><table id="sizeGuideTable"></table></div>
