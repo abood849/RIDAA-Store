@@ -3,205 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="متجر أزياء ولباس شعبي رجالي ونسائي مع خدمة التفصيل حسب الطلب." />
-  <title>دار الأصالة | أزياء ولباس شعبي</title>
+  <meta name="description" content="RIDAA Store — أزياء وفساتين محتشمة بتصاميم أنيقة وتفصيل حسب الطلب." />
+  <title>RIDAA Store | رداء ستور</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="topbar">
-    <span>شحن مجاني للطلبات فوق 1000 د.م</span>
-    <span>توصيل داخل المغرب خلال 3–7 أيام</span>
-  </div>
-
+  <div class="topbar"><span id="topbarOne">شحن مجاني للطلبات فوق 1000 د.م</span><span id="topbarTwo">توصيل داخل المغرب خلال 3–7 أيام</span></div>
   <header class="header" id="header">
-    <a class="brand" href="#home" aria-label="الصفحة الرئيسية">
-      <img src="assets/logo.svg" alt="شعار دار الأصالة" />
-      <div>
-        <strong>دار الأصالة</strong>
-        <small>تفصيل • أناقة • هوية</small>
-      </div>
-    </a>
-
-    <nav class="nav" id="navMenu" aria-label="التنقل الرئيسي">
-      <a href="#home" class="active">الرئيسية</a>
-      <a href="#products">المتجر</a>
-      <a href="#custom">تفصيل خاص</a>
-      <a href="#story">قصتنا</a>
-      <a href="#contact">تواصل معنا</a>
-    </nav>
-
+    <a class="brand" href="#home" aria-label="الصفحة الرئيسية"><img id="headerLogo" src="assets/logo-light.svg" alt="RIDAA Store"/><div><strong id="brandName">RIDAA Store</strong><small id="brandTagline">رداء يليق بكِ</small></div></a>
+    <nav class="nav" id="navMenu"><a href="#home" class="active">الرئيسية</a><a href="#products">المتجر</a><a href="#custom">تفصيل خاص</a><a href="#story">قصتنا</a><a href="#contact">تواصل معنا</a></nav>
     <div class="header-actions">
-      <button class="icon-button" id="searchToggle" aria-label="بحث">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
-      </button>
-      <button class="cart-button" id="cartToggle" aria-label="فتح سلة المشتريات">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 7H6m4 13h.01M18 20h.01"/></svg>
-        <span>السلة</span>
-        <b id="cartCount">0</b>
-      </button>
-      <button class="menu-button" id="menuToggle" aria-label="فتح القائمة">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="icon-button" id="searchToggle" aria-label="بحث"><svg viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg></button>
+      <button class="cart-button" id="cartToggle"><svg viewBox="0 0 24 24"><path d="M3 3h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 7H6m4 13h.01M18 20h.01"/></svg><span>السلة</span><b id="cartCount">0</b></button>
+      <button class="menu-button" id="menuToggle"><span></span><span></span><span></span></button>
     </div>
   </header>
-
-  <div class="search-panel" id="searchPanel">
-    <div class="search-box">
-      <input id="globalSearch" type="search" placeholder="ابحث عن جلابية، قفطان، ثوب..." />
-      <button id="closeSearch" aria-label="إغلاق البحث">×</button>
-    </div>
-  </div>
+  <div class="search-panel" id="searchPanel"><div class="search-box"><input id="globalSearch" type="search" placeholder="ابحثي عن فستان، عباية، قفطان..."/><button id="closeSearch">×</button></div></div>
 
   <main>
     <section class="hero" id="home">
-      <div class="hero-pattern"></div>
-      <div class="hero-content reveal">
-        <span class="eyebrow">تصاميم مستوحاة من التراث</span>
-        <h1>أناقة أصيلة<br><em>بتفاصيل معاصرة</em></h1>
-        <p>مجموعة مختارة من اللباس الشعبي الرجالي والنسائي، تُنفّذ بعناية وتُصمّم لتعبّر عن شخصيتك.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#products">تسوّق المجموعة</a>
-          <a class="button ghost" href="#custom">اطلب تصميمك الخاص</a>
-        </div>
-        <div class="hero-stats">
-          <div><strong>+500</strong><span>تصميم منفّذ</span></div>
-          <div><strong>12</strong><span>سنة خبرة</span></div>
-          <div><strong>4.9</strong><span>تقييم العملاء</span></div>
-        </div>
-      </div>
-      <div class="hero-visual reveal">
-        <div class="hero-image main-image"></div>
-        <div class="hero-card">
-          <span>قطعة الأسبوع</span>
-          <strong>فستان لافندر مزهر</strong>
-          <small>ابتداءً من 399 د.م</small>
-        </div>
-        <div class="floating-badge">صناعة يدوية</div>
-      </div>
+      <div class="hero-content reveal"><span class="eyebrow" id="heroEyebrow">مجموعة RIDAA الجديدة</span><h1><span id="heroTitle">تسوّقي بكل أناقة</span><br><em id="heroAccent">بتفاصيل تصنع الفرق</em></h1><p id="heroSubtitle">تصاميم محتشمة، أنثوية وعصرية مختارة بعناية لتمنحك حضورًا مميزًا.</p><div class="hero-actions"><a class="button primary" href="#products">تسوّقي المجموعة</a><a class="button ghost" href="#custom">اطلبي تصميمك الخاص</a></div><div class="hero-stats"><div><strong id="statDesigns">+500</strong><span>تصميم منفّذ</span></div><div><strong id="statYears">12</strong><span>سنة خبرة</span></div><div><strong id="statRating">4.9</strong><span>تقييم العملاء</span></div></div></div>
+      <div class="hero-visual reveal"><div class="hero-image main-image" id="heroImage"></div><div class="hero-card"><span>قطعة الأسبوع</span><strong id="featuredName">فستان وردي كلاسيكي</strong><small id="featuredPrice">ابتداءً من 385 د.م</small></div><div class="floating-badge">RIDAA</div></div>
     </section>
 
-    <section class="categories section-space">
-      <div class="section-heading reveal">
-        <div>
-          <span class="eyebrow">اختر أسلوبك</span>
-          <h2>تسوّق حسب الفئة</h2>
-        </div>
-        <p>تصاميم تناسب المناسبات، الأعراس، الإطلالات الرسمية، والاستخدام اليومي.</p>
-      </div>
-      <div class="category-grid">
-        <article class="category-card men reveal" data-filter-link="women">
-          <div class="category-content"><span>مجموعة النساء</span><h3>فساتين وعبايات راقية</h3><button>اكتشفي المجموعة ←</button></div>
-        </article>
-        <article class="category-card women reveal" data-filter-link="girls">
-          <div class="category-content"><span>مجموعة البنات</span><h3>إطلالات ناعمة للصغيرات</h3><button>اكتشفي المجموعة ←</button></div>
-        </article>
-        <article class="category-card custom reveal" data-scroll="#custom">
-          <div class="category-content"><span>تصميم خاص</span><h3>قطعة مصنوعة لأجلك</h3><button>ابدأ طلبك ←</button></div>
-        </article>
-      </div>
-    </section>
+    <section class="categories section-space"><div class="section-heading reveal"><div><span class="eyebrow">اختاري أسلوبك</span><h2>تسوّقي حسب الفئة</h2></div><p id="categoryIntro">فساتين وعبايات بتصاميم محتشمة تناسب اليوم والمناسبة.</p></div><div class="category-grid"><article class="category-card women reveal" data-filter-link="women"><div class="category-content"><span id="womenCategoryLabel">مجموعة النساء</span><h3 id="womenCategoryTitle">فساتين وعبايات راقية</h3><button>اكتشفي المجموعة ←</button></div></article><article class="category-card girls reveal" data-filter-link="girls"><div class="category-content"><span id="girlsCategoryLabel">مجموعة البنات</span><h3 id="girlsCategoryTitle">إطلالات ناعمة للصغيرات</h3><button>اكتشفي المجموعة ←</button></div></article><article class="category-card custom reveal" data-scroll="#custom"><div class="category-content"><span id="customCategoryLabel">تصميم خاص</span><h3 id="customCategoryTitle">قطعة مصنوعة لأجلك</h3><button>ابدئي طلبك ←</button></div></article></div></section>
 
-    <section class="products-section section-space" id="products">
-      <div class="section-heading reveal">
-        <div><span class="eyebrow">مختاراتنا</span><h2>أحدث التصاميم</h2></div>
-        <a href="#products" class="text-link">عرض جميع المنتجات ←</a>
-      </div>
+    <section class="products-section section-space" id="products"><div class="section-heading reveal"><div><span class="eyebrow">مختاراتنا</span><h2>أحدث التصاميم</h2></div><a href="#products" class="text-link">عرض جميع المنتجات ←</a></div><div class="product-toolbar reveal"><div class="filter-tabs"><button class="active" data-filter="all">الكل</button><button data-filter="women">نسائي</button><button data-filter="girls">بناتي</button><button data-filter="new">وصل حديثًا</button></div><select id="sortSelect"><option value="featured">الترتيب: المميز</option><option value="low">السعر: الأقل أولًا</option><option value="high">السعر: الأعلى أولًا</option></select></div><div class="product-grid" id="productGrid"></div></section>
 
-      <div class="product-toolbar reveal">
-        <div class="filter-tabs" role="tablist" aria-label="فلترة المنتجات">
-          <button class="active" data-filter="all">الكل</button>
-          <button data-filter="women">نسائي</button>
-          <button data-filter="girls">بناتي</button>
-          <button data-filter="new">وصل حديثًا</button>
-        </div>
-        <select id="sortSelect" aria-label="ترتيب المنتجات">
-          <option value="featured">الترتيب: المميز</option>
-          <option value="low">السعر: الأقل أولًا</option>
-          <option value="high">السعر: الأعلى أولًا</option>
-        </select>
-      </div>
+    <section class="custom-design section-space" id="custom"><div class="custom-image reveal" id="customImage"><div class="experience-badge"><strong>100%</strong><span>تفصيل حسب قياساتك</span></div></div><div class="custom-content reveal"><span class="eyebrow">من الفكرة إلى القطعة</span><h2 id="customTitle">صمّمي إطلالتك الخاصة</h2><p id="customText">أرسلي لنا فكرتك أو صورة مرجعية، وحددي اللون والخامة والتفاصيل. نتواصل معك لتأكيد القياسات قبل التنفيذ.</p><div class="steps"><div><b>01</b><span><strong>شاركي الفكرة</strong><small>صورة، رسم، أو وصف مختصر</small></span></div><div><b>02</b><span><strong>اختاري التفاصيل</strong><small>الخامة، اللون، والتفاصيل</small></span></div><div><b>03</b><span><strong>استلمي قطعتك</strong><small>تشطيب دقيق وتوصيل آمن</small></span></div></div><button class="button primary" id="customOrderBtn">ابدئي طلب التفصيل</button></div></section>
 
-      <div class="product-grid" id="productGrid"></div>
-    </section>
+    <section class="story section-space" id="story"><div class="story-card reveal"><span class="eyebrow">قصتنا</span><h2 id="storyTitle">نصمم رداءً يعكس أناقتك</h2><p id="storyText">في RIDAA نهتم بالقصة والخامة والقصّة قبل كل شيء. هدفنا أن تصلك قطعة جميلة، مريحة، ومصنوعة بتفاصيل تشبهك.</p><a href="#contact" class="text-link light">تعرّفي علينا أكثر ←</a></div><div class="story-mosaic reveal"><div></div><div></div><div></div></div></section>
 
-    <section class="custom-design section-space" id="custom">
-      <div class="custom-image reveal">
-        <div class="experience-badge"><strong>100%</strong><span>تفصيل حسب قياساتك</span></div>
-      </div>
-      <div class="custom-content reveal">
-        <span class="eyebrow">من الفكرة إلى القطعة</span>
-        <h2>صمّم إطلالتك الخاصة</h2>
-        <p>أرسل لنا فكرتك أو صورة مرجعية، واختر نوع القماش والتطريز والألوان. سيقوم فريقنا بمراجعة الطلب والتواصل معك لتأكيد القياسات والتفاصيل.</p>
-        <div class="steps">
-          <div><b>01</b><span><strong>شارك الفكرة</strong><small>صورة، رسم، أو وصف مختصر</small></span></div>
-          <div><b>02</b><span><strong>اختر التفاصيل</strong><small>القماش، اللون، التطريز والمقاس</small></span></div>
-          <div><b>03</b><span><strong>استلم قطعتك</strong><small>تشطيب دقيق وتوصيل آمن</small></span></div>
-        </div>
-        <button class="button primary" id="customOrderBtn">ابدأ طلب التفصيل</button>
-      </div>
-    </section>
+    <section class="testimonials section-space"><div class="section-heading center reveal"><span class="eyebrow">آراء العملاء</span><h2>تجربة تستحق الثقة</h2></div><div class="testimonial-grid"><blockquote class="reveal"><div class="stars">★★★★★</div><p id="testimonial1Text">التفصيل دقيق والخامة جميلة جدًا، والتواصل كان سريعًا وواضحًا.</p><footer><strong id="testimonial1Name">سارة</strong><span>طلب تفصيل خاص</span></footer></blockquote><blockquote class="reveal"><div class="stars">★★★★★</div><p id="testimonial2Text">التغليف أنيق والمقاس جاء مضبوطًا. سأكرر الطلب بالتأكيد.</p><footer><strong id="testimonial2Name">مريم</strong><span>مجموعة النساء</span></footer></blockquote><blockquote class="reveal"><div class="stars">★★★★★</div><p id="testimonial3Text">أحببت تنسيق الألوان والتفاصيل، والموقع سهل جدًا في الطلب.</p><footer><strong id="testimonial3Name">هدى</strong><span>مجموعة المناسبات</span></footer></blockquote></div></section>
 
-    <section class="story section-space" id="story">
-      <div class="story-card reveal">
-        <span class="eyebrow">قصتنا</span>
-        <h2>نحفظ روح التراث، ونصنعها بأسلوب اليوم</h2>
-        <p>نؤمن أن اللباس الشعبي ليس مجرد قطعة ملابس، بل ذاكرة وهوية. لذلك نجمع بين القصّات الأصيلة، الأقمشة المختارة، والتفاصيل الحديثة لنقدّم لك قطعة تعيش طويلًا.</p>
-        <a href="#contact" class="text-link light">تعرّف علينا أكثر ←</a>
-      </div>
-      <div class="story-mosaic reveal"><div></div><div></div><div></div></div>
-    </section>
-
-    <section class="testimonials section-space">
-      <div class="section-heading center reveal"><span class="eyebrow">آراء العملاء</span><h2>تجربة تستحق الثقة</h2></div>
-      <div class="testimonial-grid">
-        <blockquote class="reveal"><div class="stars">★★★★★</div><p>التفصيل كان دقيقًا جدًا والقماش أجمل من الصور. وصلتني القطعة بتغليف فاخر وفي الوقت المتفق عليه.</p><footer><strong>لينا محمد</strong><span>طلب قفطان مخصص</span></footer></blockquote>
-        <blockquote class="reveal"><div class="stars">★★★★★</div><p>طلبت ثوبًا لمناسبة خاصة، وكانت خدمة القياسات والمتابعة ممتازة. النتيجة أنيقة ومريحة جدًا.</p><footer><strong>عمر خالد</strong><span>مجموعة الرجال</span></footer></blockquote>
-        <blockquote class="reveal"><div class="stars">★★★★★</div><p>أحببت الاهتمام بالتطريز والتفاصيل الصغيرة. الموقع سهل والطلب واضح والتواصل سريع.</p><footer><strong>سارة أحمد</strong><span>مجموعة المناسبات</span></footer></blockquote>
-      </div>
-    </section>
-
-    <section class="newsletter reveal">
-      <div><span class="eyebrow">كن أول من يعرف</span><h2>تصاميم جديدة وعروض خاصة</h2><p>اشترك ليصلك جديد المجموعات والمناسبات.</p></div>
-      <form id="newsletterForm"><input type="email" required placeholder="البريد الإلكتروني" /><button class="button primary" type="submit">اشترك الآن</button></form>
-    </section>
+    <section class="newsletter reveal"><div><span class="eyebrow">كوني أول من يعرف</span><h2>تصاميم جديدة وعروض خاصة</h2><p>اشتركي ليصلك جديد RIDAA.</p></div><form id="newsletterForm"><input type="email" required placeholder="البريد الإلكتروني"/><button class="button primary">اشتركي الآن</button></form></section>
   </main>
 
-  <footer class="footer" id="contact">
-    <div class="footer-grid">
-      <div class="footer-brand"><img src="assets/logo-light.svg" alt="دار الأصالة" /><p>متجر متخصص في تصميم وتفصيل الأزياء واللباس الشعبي الرجالي والنسائي.</p><div class="socials"><a href="#">إنستغرام</a><a href="#">فيسبوك</a><a href="#">تيك توك</a></div></div>
-      <div><h4>تصفّح</h4><a href="#products">المتجر</a><a href="#custom">تفصيل خاص</a><a href="#story">من نحن</a></div>
-      <div><h4>خدمة العملاء</h4><a href="#">الشحن والتوصيل</a><a href="#">الاستبدال والاسترجاع</a><a href="#">دليل المقاسات</a></div>
-      <div><h4>تواصل معنا</h4><a href="tel:+962790000000">+962 79 000 0000</a><a href="mailto:hello@daralasala.com">hello@daralasala.com</a><span>عمّان، الأردن</span></div>
-    </div>
-    <div class="footer-bottom"><span>© 2026 دار الأصالة. جميع الحقوق محفوظة.</span><span>سياسة الخصوصية • الشروط والأحكام</span></div>
-  </footer>
+  <footer class="footer" id="contact"><div class="footer-grid"><div class="footer-brand"><img id="footerLogo" src="assets/logo-light.svg" alt="RIDAA Store"/><p id="footerDescription">متجر أزياء محتشمة وتصميم وتفصيل حسب الطلب.</p><div class="socials"><a id="instagramLink" href="#">إنستغرام</a><a id="facebookLink" href="#">فيسبوك</a><a id="tiktokLink" href="#">تيك توك</a></div></div><div><h4>تصفّح</h4><a href="#products">المتجر</a><a href="#custom">تفصيل خاص</a><a href="#story">من نحن</a></div><div><h4>خدمة العملاء</h4><a href="#">الشحن والتوصيل</a><a href="#">الاستبدال والاسترجاع</a><a href="#">دليل المقاسات</a></div><div><h4>تواصلي معنا</h4><a id="phoneLink" href="#">+212 600 000 000</a><a id="emailLink" href="#">hello@ridaastore.com</a><span id="addressText">المغرب</span></div></div><div class="footer-bottom"><span>© 2026 RIDAA Store. جميع الحقوق محفوظة.</span><a class="admin-entry" href="admin.html">دخول الإدارة</a></div></footer>
 
-  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
-    <div class="drawer-header"><div><span>سلة المشتريات</span><small id="cartSubtitle">0 منتجات</small></div><button id="closeCart" aria-label="إغلاق السلة">×</button></div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-empty" id="cartEmpty"><div>🛍️</div><h3>سلتك فارغة</h3><p>أضف بعض القطع المميزة لتظهر هنا.</p></div>
-    <div class="cart-footer" id="cartFooter"><div class="subtotal"><span>المجموع</span><strong id="cartTotal">0 د.م</strong></div><button class="button primary full" id="checkoutBtn">إتمام الطلب عبر واتساب</button><small>تكلفة الشحن تُحسب عند تأكيد الطلب.</small></div>
-  </aside>
+  <aside class="cart-drawer" id="cartDrawer"><div class="drawer-header"><div><span>سلة المشتريات</span><small id="cartSubtitle">0 منتجات</small></div><button id="closeCart">×</button></div><div class="cart-items" id="cartItems"></div><div class="cart-empty" id="cartEmpty"><div>🛍️</div><h3>سلتك فارغة</h3><p>أضيفي بعض القطع المميزة لتظهر هنا.</p></div><div class="cart-footer" id="cartFooter"><div class="subtotal"><span>المجموع</span><strong id="cartTotal">0 د.م</strong></div><button class="button primary full" id="checkoutBtn">إتمام الطلب عبر واتساب</button><small>تكلفة الشحن تُحسب عند تأكيد الطلب.</small></div></aside>
   <div class="overlay" id="overlay"></div>
-
-  <div class="modal" id="productModal" aria-hidden="true">
-    <button class="modal-close" id="modalClose" aria-label="إغلاق">×</button>
-    <div class="modal-image" id="modalImage"></div>
-    <div class="modal-content">
-      <span class="eyebrow" id="modalCategory"></span>
-      <h2 id="modalTitle"></h2>
-      <div class="modal-price" id="modalPrice"></div>
-      <p id="modalDescription"></p>
-      <div class="option-row"><label>المقاس</label><div class="size-options"><button>S</button><button class="active">M</button><button>L</button><button>XL</button></div></div>
-      <div class="option-row"><label for="modalQty">الكمية</label><input id="modalQty" type="number" min="1" value="1" /></div>
-      <button class="button primary full" id="modalAdd">أضف إلى السلة</button>
-    </div>
-  </div>
-
+  <div class="modal" id="productModal"><button class="modal-close" id="modalClose">×</button><div class="modal-image" id="modalImage"></div><div class="modal-content"><span class="eyebrow" id="modalCategory"></span><h2 id="modalTitle"></h2><div class="modal-price" id="modalPrice"></div><p id="modalDescription"></p><div class="option-row"><label>المقاس</label><div class="size-options"><button>S</button><button class="active">M</button><button>L</button><button>XL</button></div></div><div class="option-row"><label for="modalQty">الكمية</label><input id="modalQty" type="number" min="1" value="1"/></div><button class="button primary full" id="modalAdd">أضيفي إلى السلة</button></div></div>
   <div class="toast" id="toast"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

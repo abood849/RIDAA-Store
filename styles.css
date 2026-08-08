@@ -71,7 +71,7 @@ img { max-width: 100%; display: block; }
 .hero-stats span { color: var(--ink-soft); font-size: 12px; }
 .hero-visual { position: relative; min-height: 620px; }
 .hero-image { border-radius: 240px 240px 28px 28px; position: absolute; inset: 0 4% 0 13%; background-position: center; background-size: cover; box-shadow: var(--shadow); }
-.main-image { background-image: linear-gradient(to top, rgba(36,26,22,.18), transparent 42%), url('assets/products/lavender-floral-maxi.png'); }
+.main-image { background-image: linear-gradient(to top, rgba(36,26,22,.12), transparent 46%), url('assets/products/model-set/dusty-rose.jpg'); }
 .hero-card { position: absolute; right: -15px; bottom: 55px; background: rgba(255,255,255,.93); backdrop-filter: blur(12px); padding: 20px 24px; border-radius: 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; min-width: 230px; }
 .hero-card span { color: var(--gold-dark); font-size: 11px; font-weight: 800; }
 .hero-card strong { margin: 6px 0; }
@@ -90,9 +90,9 @@ img { max-width: 100%; display: block; }
 .category-card { min-height: 430px; border-radius: var(--radius); overflow: hidden; position: relative; background-size: cover; background-position: center; cursor: pointer; }
 .category-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(23,17,14,.82), rgba(23,17,14,.04) 65%); transition: .3s; }
 .category-card:hover::after { background: linear-gradient(to top, rgba(23,17,14,.9), rgba(23,17,14,.04) 70%); }
-.category-card.men { background-image: url('assets/products/sage-elegance-abaya.png'); }
-.category-card.women { background-image: url('assets/products/mint-girls-lace-dress.png'); }
-.category-card.custom { background-image: url('assets/products/fuchsia-layered-dress.png'); }
+.category-card.men { background-image: url('assets/products/model-set/sage.jpg'); }
+.category-card.women { background-image: url('assets/products/model-set/sage.jpg'); }
+.category-card.custom { background-image: url('assets/products/model-set/fuchsia.jpg'); }
 .category-content { position: absolute; z-index: 2; bottom: 0; right: 0; padding: 30px; color: #fff; }
 .category-content span { font-size: 12px; color: #ead8b7; }
 .category-content h3 { font-family: "Noto Kufi Arabic"; font-size: 23px; margin: 8px 0 14px; }
@@ -124,7 +124,7 @@ img { max-width: 100%; display: block; }
 .add-cart:hover { background: var(--ink); color: #fff; }
 
 .custom-design { display: grid; grid-template-columns: 1fr 1fr; gap: 75px; align-items: center; }
-.custom-image { min-height: 650px; border-radius: 30px; background: url('assets/products/sky-blue-mannequin-dress.png') center/cover; position: relative; }
+.custom-image { min-height: 650px; border-radius: 30px; background: url('assets/products/model-set/sky-blue.jpg') center top/cover; position: relative; }
 .experience-badge { position: absolute; bottom: 28px; left: 28px; background: var(--paper); border-radius: 18px; padding: 18px 24px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
 .experience-badge strong { color: var(--burgundy); font-size: 28px; }
 .experience-badge span { font-size: 12px; color: var(--ink-soft); }
@@ -302,7 +302,7 @@ img { max-width: 100%; display: block; }
 
 .hero {
   background-color: var(--reference-burgundy);
-  background-image: url("assets/burgundy-pattern.png");
+  background-image: none;
   background-repeat: repeat;
   background-position: top right;
   background-size: 539px 210px;
@@ -341,7 +341,7 @@ img { max-width: 100%; display: block; }
 /* Full-site burgundy theme fix: remove remaining white section backgrounds */
 body {
   background-color: var(--reference-burgundy);
-  background-image: url("assets/burgundy-pattern.png");
+  background-image: none;
   background-repeat: repeat;
   background-attachment: fixed;
   background-size: 539px 210px;
@@ -421,4 +421,75 @@ body {
 
 @media (max-width: 840px) {
   .section-heading p { color: rgba(255,255,255,.78); }
+}
+
+.category-card.girls { background-image: url('assets/products/model-set/mint.jpg'); }
+
+
+/* ===== RIDAA v4 — plain burgundy background, no dots ===== */
+:root {
+  --reference-burgundy: #390e27;
+  --reference-burgundy-2: #4a1230;
+  --rose: #b96a83;
+  --cream: #f8f3ef;
+  --paper: #fffdfb;
+  --gold: #d8b06a;
+  --gold-dark: #a97f3d;
+}
+body {
+  background: var(--reference-burgundy) !important;
+  background-image: none !important;
+}
+.hero {
+  background: var(--reference-burgundy) !important;
+  background-image: none !important;
+}
+.hero-pattern { display: none !important; }
+.header { background: rgba(57,14,39,.92); border-bottom-color: rgba(255,255,255,.08); }
+.header.scrolled { background: rgba(43,8,28,.97); border-color: rgba(255,255,255,.10); }
+.brand strong { color:#fff; }
+.brand small, .nav a { color:rgba(255,255,255,.72); }
+.nav a.active, .nav a:hover { color:#fff; }
+.icon-button,.cart-button,.menu-button { color:#fff; border-color:rgba(255,255,255,.18); }
+.menu-button span { background:#fff; }
+.hero-content::before { display:none !important; }
+.hero-content, .hero h1, .hero h1 em { color:#fff; }
+.hero h1 em { color:#f0d6a4; }
+.hero-content > p, .hero-stats span { color:rgba(255,255,255,.75); }
+.hero-stats { border-top-color:rgba(255,255,255,.12); }
+.hero .eyebrow { color:#f0d6a4; }
+.button.primary { background:#f0d6a4; color:#351020; }
+.button.primary:hover { background:#fff; color:#351020; }
+.button.ghost { border-color:rgba(255,255,255,.28); color:#fff; }
+.button.ghost:hover { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.55); }
+.floating-badge { background:#2a0b1c; border-color:#f0d6a4; color:#f0d6a4; }
+.hero-card { background:rgba(255,253,249,.96); }
+.categories,.products-section,.custom-design,.testimonials { background:var(--reference-burgundy) !important; }
+.section-heading h2,.custom-content h2,.testimonials h2,.categories h2,.products-section h2 { color:#fff; }
+.section-heading p,.custom-content>p,.custom-content .steps small,.custom-content .steps strong { color:rgba(255,255,255,.78); }
+.categories .eyebrow,.products-section .eyebrow,.custom-content .eyebrow,.testimonials .eyebrow { color:#f0d6a4; }
+.custom-content .steps div { background:rgba(255,255,255,.065); border-color:rgba(255,255,255,.1); }
+.custom-content .steps b { background:rgba(240,214,164,.14); color:#f0d6a4; }
+.products-section .filter-tabs { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.12); }
+.products-section .filter-tabs button { color:rgba(255,255,255,.78); }
+.products-section .filter-tabs button.active { background:#fff; color:#390e27; }
+.product-toolbar select { background:#fff; }
+.story { background:linear-gradient(135deg,#e7b0c0 0%,#cd7e98 100%); color:#4b1630; }
+.story-card h2 { color:#4b1630; }
+.story-card p { color:rgba(75,22,48,.82); }
+.story-card .eyebrow { color:#7a2949; }
+.text-link.light { color:#651c3b; }
+.newsletter { background:linear-gradient(135deg,#f5d8e1,#e7b0c0); }
+.footer { background:#210816; }
+.admin-entry { color:#f0d6a4 !important; }
+.search-panel { background:#310b21; }
+.search-box { border-bottom-color:rgba(255,255,255,.7); }
+.search-box input,.search-box button { color:#fff; }
+.search-box input::placeholder { color:rgba(255,255,255,.5); }
+.category-card { background-position:center top; }
+.hero-image { background-position:center top; }
+
+@media(max-width:840px){
+  .nav { background:#310b21; }
+  .nav a { border-bottom-color:rgba(255,255,255,.08); }
 }

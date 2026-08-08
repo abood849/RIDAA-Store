@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RIDAA Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="setupNotice" class="setup-notice hidden">لم يتم ربط Supabase بعد. افتح ملف <b>supabase-config.js</b> ثم ضع Project URL وPublishable/Anon key. راجع <b>README_ADMIN_SETUP.md</b>.</div>
+
+<section id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <img src="assets/logo.svg" alt="RIDAA"><h1>لوحة إدارة RIDAA</h1><p>دخول المدراء فقط</p>
+    <form id="loginForm"><label>البريد الإلكتروني<input id="loginEmail" type="email" required></label><label>كلمة المرور<input id="loginPassword" type="password" required minlength="6"></label><button class="primary" type="submit">تسجيل الدخول</button></form>
+    <button id="showSignup" class="link-btn">لدي دعوة مدير وأريد إنشاء حساب</button>
+    <form id="signupForm" class="hidden"><label>البريد الإلكتروني المدعو<input id="signupEmail" type="email" required></label><label>كلمة المرور الجديدة<input id="signupPassword" type="password" required minlength="8"></label><button class="primary" type="submit">إنشاء حساب المدير</button><button type="button" id="showLogin" class="link-btn">العودة لتسجيل الدخول</button></form>
+    <div id="authMsg" class="msg"></div>
+  </div>
+</section>
+
+<div id="adminApp" class="admin-app hidden">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><img src="assets/logo-light.svg"><div><b>RIDAA</b><small>لوحة الإدارة</small></div></div>
+    <nav>
+      <button data-view="overview" class="active">الرئيسية</button>
+      <button data-view="products">المنتجات</button>
+      <button data-view="settings">معلومات المتجر</button>
+      <button data-view="content">محتوى الصفحة</button>
+      <button data-view="media">الصور والوسائط</button>
+      <button data-view="admins" id="adminsNav">المدراء والصلاحيات</button>
+    </nav>
+    <a class="visit-link" href="index.html" target="_blank">زيارة المتجر ↗</a>
+    <button id="logoutBtn" class="logout">تسجيل الخروج</button>
+  </aside>
+  <main class="admin-main">
+    <header class="admin-header"><div><h1 id="viewTitle">لوحة التحكم</h1><p id="welcomeText"></p></div><span id="roleBadge" class="role-badge"></span></header>
+
+    <section id="view-overview" class="view active-view">
+      <div class="stats-grid"><article><span>المنتجات</span><strong id="statProducts">0</strong></article><article><span>المدراء</span><strong id="statAdmins">0</strong></article><article><span>الصور</span><strong id="statMedia">0</strong></article><article><span>حالة المتجر</span><strong>مباشر</strong></article></div>
+      <div class="panel"><h2>تحكم كامل من مكان واحد</h2><div class="feature-grid"><div>إضافة وحذف المنتجات</div><div>تعديل الأسعار والأسماء</div><div>رفع وحذف الصور</div><div>تغيير رقم الهاتف والعنوان</div><div>تعديل نصوص الصفحة</div><div>إدارة المدراء</div></div></div>
+    </section>
+
+    <section id="view-products" class="view">
+      <div class="panel"><div class="panel-head"><div><h2>المنتجات</h2><p>أضيفي، عدّلي أو احذفي أي قطعة.</p></div><button id="addProductBtn" class="primary small">+ إضافة منتج</button></div><div class="table-wrap"><table><thead><tr><th>الصورة</th><th>الاسم</th><th>الفئة</th><th>السعر</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div></div>
+    </section>
+
+    <section id="view-settings" class="view">
+      <form id="settingsForm" class="panel form-grid"><h2 class="full">معلومات المتجر</h2>
+        <label>اسم المتجر<input name="store_name"></label><label>الشعار النصي<input name="tagline"></label><label>رقم الهاتف<input name="phone"></label><label>رقم واتساب بدون +<input name="whatsapp"></label><label>البريد الإلكتروني<input name="email" type="email"></label><label>مكان العمل / العنوان<input name="address"></label><label>إنستغرام<input name="instagram"></label><label>فيسبوك<input name="facebook"></label><label>تيك توك<input name="tiktok"></label><label>رابط شعار الموقع<input name="logo_light_url"></label><label>الشريط العلوي 1<input name="topbar_one"></label><label>الشريط العلوي 2<input name="topbar_two"></label><label class="full">وصف أسفل الموقع<textarea name="footer_description"></textarea></label><div class="full"><button class="primary">حفظ معلومات المتجر</button></div>
+      </form>
+    </section>
+
+    <section id="view-content" class="view">
+      <form id="contentForm" class="panel form-grid"><h2 class="full">محتوى الصفحة الرئيسية</h2>
+        <label>النص الصغير أعلى البطل<input name="hero_eyebrow"></label><label>العنوان الرئيسي<input name="hero_title"></label><label>السطر الملوّن<input name="hero_accent"></label><label class="full">الوصف الرئيسي<textarea name="hero_subtitle"></textarea></label>
+        <label>عدد التصاميم<input name="stat_designs"></label><label>سنوات الخبرة<input name="stat_years"></label><label>التقييم<input name="stat_rating"></label><label class="full">وصف الفئات<textarea name="category_intro"></textarea></label>
+        <label>عنوان فئة النساء<input name="women_category_title"></label><label>عنوان فئة البنات<input name="girls_category_title"></label><label>عنوان بطاقة التفصيل<input name="custom_category_title"></label><label>عنوان التفصيل الخاص<input name="custom_title"></label><label class="full">وصف التفصيل<textarea name="custom_text"></textarea></label><label>عنوان قصتنا<input name="story_title"></label><label class="full">نص قصتنا<textarea name="story_text"></textarea></label><label>صورة البطل الرئيسية<input name="hero_image_url"></label><label>صورة قسم التفصيل<input name="custom_image_url"></label><label>صورة فئة النساء<input name="category_women_image_url"></label><label>صورة فئة البنات<input name="category_girls_image_url"></label><label>صورة بطاقة التفصيل<input name="category_custom_image_url"></label><label>صورة قصة 1<input name="story_image_1"></label><label>صورة قصة 2<input name="story_image_2"></label><label>صورة قصة 3<input name="story_image_3"></label><label>اسم رأي 1<input name="testimonial_1_name"></label><label class="full">نص رأي 1<textarea name="testimonial_1_text"></textarea></label><label>اسم رأي 2<input name="testimonial_2_name"></label><label class="full">نص رأي 2<textarea name="testimonial_2_text"></textarea></label><label>اسم رأي 3<input name="testimonial_3_name"></label><label class="full">نص رأي 3<textarea name="testimonial_3_text"></textarea></label><div class="full"><button class="primary">حفظ محتوى الصفحة</button></div>
+      </form>
+    </section>
+
+    <section id="view-media" class="view"><div class="panel"><div class="panel-head"><div><h2>الصور والوسائط</h2><p>رفع صور جديدة أو حذف الصور التي رفعتها من لوحة التحكم.</p></div><label class="upload-btn">+ رفع صور<input id="mediaUpload" type="file" accept="image/*" multiple hidden></label></div><div id="mediaGrid" class="media-grid"></div></div></section>
+
+    <section id="view-admins" class="view"><div class="panel"><div class="panel-head"><div><h2>المدراء والصلاحيات</h2><p>المدير الرئيسي فقط يستطيع دعوة أو حذف المدراء.</p></div></div><form id="inviteForm" class="inline-form"><input id="inviteEmail" type="email" placeholder="email@example.com" required><select id="inviteRole"><option value="admin">Admin</option><option value="super_admin">Super Admin</option></select><button class="primary small">إضافة دعوة مدير</button></form><h3>المدراء الحاليون</h3><div id="adminsList" class="list"></div><h3>الدعوات</h3><div id="invitesList" class="list"></div></div></section>
+  </main>
+</div>
+
+<dialog id="productDialog" class="product-dialog"><form id="productForm" method="dialog"><div class="dialog-head"><h2 id="productDialogTitle">إضافة منتج</h2><button type="button" id="closeProductDialog">×</button></div><input type="hidden" name="id"><div class="form-grid"><label>اسم المنتج<input name="name" required></label><label>الفئة<select name="category"><option value="women">نسائي</option><option value="girls">بناتي</option></select></label><label>اسم الفئة الظاهر<input name="label" value="نسائي"></label><label>السعر د.م<input name="price" type="number" step="0.01" required></label><label>السعر القديم<input name="old_price" type="number" step="0.01"></label><label>شارة المنتج<input name="badge" placeholder="جديد / مميز"></label><label>ترتيب الظهور<input name="sort_order" type="number" value="0"></label><label class="checks"><input name="is_new" type="checkbox"> وصل حديثًا</label><label class="checks"><input name="active" type="checkbox" checked> ظاهر في المتجر</label><label class="full">رابط الصورة<input name="image_url"></label><label class="full">أو ارفع صورة<input id="productImageFile" type="file" accept="image/*"></label><label class="full">الوصف<textarea name="description"></textarea></label></div><div class="dialog-actions"><button type="button" id="cancelProduct">إلغاء</button><button class="primary" type="submit">حفظ المنتج</button></div></form></dialog>
+
+<div id="toast" class="admin-toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="admin.js"></script>
+</body></html>
