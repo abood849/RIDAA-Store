@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS = {
   custom_title: 'صمّمي إطلالتك الخاصة', custom_text: 'أرسلي لنا فكرتك أو صورة مرجعية، وحددي اللون والخامة والتفاصيل. نتواصل معك لتأكيد القياسات قبل التنفيذ.',
   story_title: 'نصمم رداءً يعكس أناقتك', story_text: 'في RIDAA نهتم بالقصة والخامة والقصّة قبل كل شيء. هدفنا أن تصلك قطعة جميلة، مريحة، ومصنوعة بتفاصيل تشبهك.',
   footer_description: 'متجر أزياء محتشمة وتصميم وتفصيل حسب الطلب.',
-  logo_url: 'assets/logo-light.svg', logo_light_url: 'assets/logo-light.svg', hero_image_url: 'assets/products/model-set/dusty-rose.jpg', custom_image_url: 'assets/products/model-set/sky-blue.jpg', category_women_image_url: 'assets/products/model-set/sage.jpg', category_girls_image_url: 'assets/products/model-set/mint.jpg', category_custom_image_url: 'assets/products/model-set/fuchsia.jpg', story_image_1: 'assets/products/model-set/fuchsia.jpg', story_image_2: 'assets/products/model-set/lavender.jpg', story_image_3: 'assets/products/model-set/mint.jpg',
+  logo_url: 'assets/logo-light.svg', logo_light_url: 'assets/logo-light.svg', favicon_url: 'assets/logo.svg', show_brand_text: false, logo_width_desktop: 240, logo_width_mobile: 165, hero_image_url: 'assets/products/model-set/dusty-rose.jpg', custom_image_url: 'assets/products/model-set/sky-blue.jpg', category_women_image_url: 'assets/products/model-set/sage.jpg', category_girls_image_url: 'assets/products/model-set/mint.jpg', category_custom_image_url: 'assets/products/model-set/fuchsia.jpg', story_image_1: 'assets/products/model-set/fuchsia.jpg', story_image_2: 'assets/products/model-set/lavender.jpg', story_image_3: 'assets/products/model-set/mint.jpg',
   women_category_label: 'مجموعة النساء', women_category_title: 'فساتين وعبايات راقية', girls_category_label: 'مجموعة البنات', girls_category_title: 'إطلالات ناعمة للصغيرات', custom_category_label: 'تصميم خاص', custom_category_title: 'قطعة مصنوعة لأجلك',
   testimonial_1_name: 'سارة', testimonial_1_text: 'التفصيل دقيق والخامة جميلة جدًا، والتواصل كان سريعًا وواضحًا.', testimonial_2_name: 'مريم', testimonial_2_text: 'التغليف أنيق والمقاس جاء مضبوطًا. سأكرر الطلب بالتأكيد.', testimonial_3_name: 'هدى', testimonial_3_text: 'أحببت تنسيق الألوان والتفاصيل، والموقع سهل جدًا في الطلب.'
 };
@@ -81,7 +81,7 @@ async function initBackend() {
     ]);
     if (!pErr && productRows?.length) products = productRows.map(normalizeProduct);
     else products = DEFAULT_PRODUCTS.map(normalizeProduct);
-    if (!sErr && settingRow?.data) settings = { ...settings, ...settingRow.data };
+    if (!sErr && settingRow?.data) { settings = { ...settings, ...settingRow.data }; if (!Object.prototype.hasOwnProperty.call(settingRow.data,'logo_url') && settingRow.data.logo_light_url) settings.logo_url=settingRow.data.logo_light_url; }
   } catch (e) {
     console.warn('RIDAA backend unavailable; using bundled data.', e);
     products = DEFAULT_PRODUCTS.map(normalizeProduct);
@@ -97,8 +97,17 @@ function applySettings() {
   if ($('phoneLink')) { $('phoneLink').textContent = settings.phone; $('phoneLink').href = `tel:${String(settings.phone).replace(/\s/g,'')}`; }
   if ($('emailLink')) { $('emailLink').textContent = settings.email; $('emailLink').href = `mailto:${settings.email}`; }
   ['instagram','facebook','tiktok'].forEach(k => { const el=$(k+'Link'); if(el) el.href=settings[k]||'#'; });
-  if ($('headerLogo')) $('headerLogo').src = settings.logo_light_url || settings.logo_url || 'assets/logo-light.svg';
-  if ($('footerLogo')) $('footerLogo').src = settings.logo_light_url || settings.logo_url || 'assets/logo-light.svg';
+  const brandLogo = settings.logo_url || settings.logo_light_url || 'assets/logo-light.svg';
+  if ($('headerLogo')) { $('headerLogo').src = brandLogo; $('headerLogo').alt = settings.store_name || 'RIDAA Store'; }
+  if ($('footerLogo')) { $('footerLogo').src = brandLogo; $('footerLogo').alt = settings.store_name || 'RIDAA Store'; }
+  const showBrandText = settings.show_brand_text !== false && String(settings.show_brand_text) !== 'false';
+  const brand = document.querySelector('.brand'); if (brand) brand.classList.toggle('logo-only', !showBrandText);
+  const desktopLogoWidth = Math.max(80, Math.min(420, Number(settings.logo_width_desktop) || 240));
+  const mobileLogoWidth = Math.max(70, Math.min(280, Number(settings.logo_width_mobile) || 165));
+  document.documentElement.style.setProperty('--brand-logo-width', `${desktopLogoWidth}px`);
+  document.documentElement.style.setProperty('--brand-logo-mobile-width', `${mobileLogoWidth}px`);
+  const favicon = $('siteFavicon'); if (favicon) favicon.href = settings.favicon_url || settings.logo_url || 'assets/logo.svg';
+  document.title = `${settings.store_name || 'RIDAA Store'} | رداء ستور`;
   if ($('heroImage')) $('heroImage').style.backgroundImage = `linear-gradient(to top, rgba(36,26,22,.12), transparent 46%), url('${settings.hero_image_url || 'assets/products/model-set/dusty-rose.jpg'}')`;
   if ($('customImage')) $('customImage').style.backgroundImage = `url('${settings.custom_image_url || 'assets/products/model-set/sky-blue.jpg'}')`;
   const sectionImages = [

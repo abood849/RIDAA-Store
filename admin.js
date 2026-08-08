@@ -14,6 +14,15 @@ const parseMaybeJSON = (value,fallback=[]) => {
   try { return JSON.parse(value); } catch { return fallback; }
 };
 const lines = value => String(value||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+const allowedBrandTypes = new Set(['image/svg+xml','image/png','image/webp','image/x-icon','image/vnd.microsoft.icon']);
+const previewObjectUrl = (img,file) => { if(!img||!file)return; const old=img.dataset.objectUrl; if(old) URL.revokeObjectURL(old); const url=URL.createObjectURL(file); img.dataset.objectUrl=url; img.src=url; };
+const validateBrandFile = (file,kind='logo') => {
+  if(!file) return;
+  const ext=(file.name.split('.').pop()||'').toLowerCase();
+  const allowedExt = kind==='favicon' ? ['svg','png','webp','ico'] : ['svg','png','webp'];
+  if(!allowedExt.includes(ext) || (file.type && !allowedBrandTypes.has(file.type))) throw new Error(`صيغة ملف ${kind==='favicon'?'الأيقونة':'الشعار'} غير مدعومة`);
+  if(file.size > 5*1024*1024) throw new Error('حجم الملف يجب أن يكون أقل من 5MB');
+};
 const DEFAULT_ROWS = [
   {key:'A',label:'محيط الصدر',M:'48',L:'52',XL:'56','2XL':'60'},
   {key:'B',label:'الطول الكامل',M:'150',L:'150',XL:'150','2XL':'150'},
@@ -23,6 +32,7 @@ const DEFAULT_ROWS = [
 async function init(){
   if(!isConfigured() || !window.supabase){ $('setupNotice').classList.remove('hidden'); msg('اربط Supabase أولًا حسب ملف README_ADMIN_SETUP.md'); return; }
   sb=window.supabase.createClient(window.RIDAA_SUPABASE.url,window.RIDAA_SUPABASE.anonKey);
+  await loadPublicBranding();
   const {data:{session}}=await sb.auth.getSession();
   if(session) await enterAdmin(session.user);
   bind();
@@ -42,6 +52,10 @@ function bind(){
   $('contentForm').addEventListener('submit',saveSettings);
   $('mediaUpload').addEventListener('change',uploadMedia);
   $('inviteForm').addEventListener('submit',inviteAdmin);
+  $('brandLogoFile').addEventListener('change',e=>{ const file=e.target.files[0]; if(!file)return; try{validateBrandFile(file,'logo');previewObjectUrl($('brandLogoPreview'),file);}catch(err){toast(err.message);e.target.value='';} });
+  $('faviconFile').addEventListener('change',e=>{ const file=e.target.files[0]; if(!file)return; try{validateBrandFile(file,'favicon');previewObjectUrl($('faviconPreview'),file);}catch(err){toast(err.message);e.target.value='';} });
+  const logoUrlInput=$('settingsForm').elements.logo_url; if(logoUrlInput) logoUrlInput.addEventListener('input',()=>{ if(logoUrlInput.value.trim()) $('brandLogoPreview').src=logoUrlInput.value.trim(); });
+  const faviconUrlInput=$('settingsForm').elements.favicon_url; if(faviconUrlInput) faviconUrlInput.addEventListener('input',()=>{ if(faviconUrlInput.value.trim()) $('faviconPreview').src=faviconUrlInput.value.trim(); });
 }
 
 async function login(e){
@@ -198,14 +212,61 @@ async function uploadMany(files,folder='gallery'){
   return urls;
 }
 
+async function loadPublicBranding(){
+  try{
+    const {data}=await sb.from('store_settings').select('data').eq('id',1).maybeSingle();
+    const d=data?.data||{};
+    const logo=d.logo_url||d.logo_light_url||'assets/logo.svg';
+    const fav=d.favicon_url||d.logo_url||'assets/logo.svg';
+    if($('adminAuthLogo')) $('adminAuthLogo').src=logo;
+    if($('adminSidebarLogo')) $('adminSidebarLogo').src=logo;
+    if($('adminFavicon')) $('adminFavicon').href=fav;
+  }catch(e){}
+}
+
 async function loadSettings(){
   const {data,error}=await sb.from('store_settings').select('data').eq('id',1).maybeSingle();
   if(error)return toast(error.message); storeSettings=data?.data||{};
-  [$('settingsForm'),$('contentForm')].forEach(form=>{ [...form.elements].forEach(el=>{if(el.name&&Object.prototype.hasOwnProperty.call(storeSettings,el.name))el.value=storeSettings[el.name]??'';}); });
+  [$('settingsForm'),$('contentForm')].forEach(form=>{ [...form.elements].forEach(el=>{
+    if(!el.name) return;
+    let value=storeSettings[el.name];
+    if(el.name==='logo_url' && !value) value=storeSettings.logo_light_url;
+    if(el.type==='checkbox') el.checked = value === true || String(value)==='true';
+    else if(value!==undefined && value!==null) el.value=value;
+  }); });
+  renderBrandingPreview();
+}
+function renderBrandingPreview(){
+  const logo=storeSettings.logo_url||storeSettings.logo_light_url||'assets/logo-light.svg';
+  const fav=storeSettings.favicon_url||storeSettings.logo_url||'assets/logo.svg';
+  if($('brandLogoPreview')&&!$('brandLogoFile').files.length) $('brandLogoPreview').src=logo;
+  if($('faviconPreview')&&!$('faviconFile').files.length) $('faviconPreview').src=fav;
+  if($('adminSidebarLogo')) $('adminSidebarLogo').src=logo;
+  if($('adminAuthLogo')) $('adminAuthLogo').src=logo;
+  if($('adminFavicon')) $('adminFavicon').href=fav;
 }
 async function saveSettings(e){
-  e.preventDefault(); const patch={}; [...e.target.elements].forEach(el=>{if(el.name)patch[el.name]=el.value}); const merged={...storeSettings,...patch};
-  const {error}=await sb.from('store_settings').upsert({id:1,data:merged,updated_at:new Date().toISOString()}); if(error)return toast(error.message); storeSettings=merged; toast('تم حفظ التعديلات');
+  e.preventDefault();
+  const form=e.target; const submit=form.querySelector('button[type="submit"]');
+  if(submit){submit.disabled=true;submit.textContent='جارٍ الحفظ...';}
+  try{
+    const patch={};
+    [...form.elements].forEach(el=>{if(el.name)patch[el.name]=el.type==='checkbox'?el.checked:el.value});
+    if(form.id==='settingsForm'){
+      const logoFile=$('brandLogoFile').files[0];
+      const faviconFile=$('faviconFile').files[0];
+      if(logoFile){ validateBrandFile(logoFile,'logo'); const url=await uploadOne(logoFile,'branding/logo'); patch.logo_url=url; patch.logo_light_url=url; }
+      else if(patch.logo_url) patch.logo_light_url=patch.logo_url;
+      if(faviconFile){ validateBrandFile(faviconFile,'favicon'); patch.favicon_url=await uploadOne(faviconFile,'branding/favicon'); }
+    }
+    const merged={...storeSettings,...patch};
+    const {error}=await sb.from('store_settings').upsert({id:1,data:merged,updated_at:new Date().toISOString()});
+    if(error) throw error;
+    storeSettings=merged;
+    if(form.id==='settingsForm'){ $('brandLogoFile').value=''; $('faviconFile').value=''; renderBrandingPreview(); }
+    toast('تم حفظ التعديلات والهوية البصرية');
+  }catch(err){ toast(err.message||'تعذر حفظ التعديلات'); }
+  finally{ if(submit){submit.disabled=false;submit.textContent=form.id==='settingsForm'?'حفظ معلومات المتجر والهوية':'حفظ محتوى الصفحة';} }
 }
 
 async function listStorageRecursive(prefix=''){

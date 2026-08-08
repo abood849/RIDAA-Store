@@ -5,6 +5,7 @@
   <title>RIDAA Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link id="adminFavicon" rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -12,7 +13,7 @@
 
 <section id="authScreen" class="auth-screen">
   <div class="auth-card">
-    <img src="assets/logo.svg" alt="RIDAA"><h1>لوحة إدارة RIDAA</h1><p>دخول المدراء فقط</p>
+    <img id="adminAuthLogo" src="assets/logo.svg" alt="RIDAA"><h1>لوحة إدارة RIDAA</h1><p>دخول المدراء فقط</p>
     <form id="loginForm"><label>البريد الإلكتروني<input id="loginEmail" type="email" required></label><label>كلمة المرور<input id="loginPassword" type="password" required minlength="6"></label><button class="primary" type="submit">تسجيل الدخول</button></form>
     <button id="showSignup" class="link-btn">لدي دعوة مدير وأريد إنشاء حساب</button>
     <form id="signupForm" class="hidden"><label>البريد الإلكتروني المدعو<input id="signupEmail" type="email" required></label><label>كلمة المرور الجديدة<input id="signupPassword" type="password" required minlength="8"></label><button class="primary" type="submit">إنشاء حساب المدير</button><button type="button" id="showLogin" class="link-btn">العودة لتسجيل الدخول</button></form>
@@ -22,7 +23,7 @@
 
 <div id="adminApp" class="admin-app hidden">
   <aside class="sidebar">
-    <div class="sidebar-brand"><img src="assets/logo-light.svg"><div><b>RIDAA</b><small>لوحة الإدارة</small></div></div>
+    <div class="sidebar-brand"><img id="adminSidebarLogo" src="assets/logo-light.svg"><div><b>RIDAA</b><small>لوحة الإدارة</small></div></div>
     <nav>
       <button data-view="overview" class="active">الرئيسية</button>
       <button data-view="products">المنتجات</button>
@@ -47,8 +48,38 @@
     </section>
 
     <section id="view-settings" class="view">
-      <form id="settingsForm" class="panel form-grid"><h2 class="full">معلومات المتجر</h2>
-        <label>اسم المتجر<input name="store_name"></label><label>الشعار النصي<input name="tagline"></label><label>رقم الهاتف<input name="phone"></label><label>رقم واتساب بدون +<input name="whatsapp"></label><label>البريد الإلكتروني<input name="email" type="email"></label><label>مكان العمل / العنوان<input name="address"></label><label>إنستغرام<input name="instagram"></label><label>فيسبوك<input name="facebook"></label><label>تيك توك<input name="tiktok"></label><label>رابط شعار الموقع<input name="logo_light_url"></label><label>الشريط العلوي 1<input name="topbar_one"></label><label>الشريط العلوي 2<input name="topbar_two"></label><label class="full">وصف أسفل الموقع<textarea name="footer_description"></textarea></label><div class="full"><button class="primary">حفظ معلومات المتجر</button></div>
+      <form id="settingsForm" class="panel form-grid">
+        <h2 class="full">معلومات المتجر</h2>
+        <label>اسم المتجر<input name="store_name"></label><label>الشعار النصي<input name="tagline"></label><label>رقم الهاتف<input name="phone"></label><label>رقم واتساب بدون +<input name="whatsapp"></label><label>البريد الإلكتروني<input name="email" type="email"></label><label>مكان العمل / العنوان<input name="address"></label><label>إنستغرام<input name="instagram"></label><label>فيسبوك<input name="facebook"></label><label>تيك توك<input name="tiktok"></label><label>الشريط العلوي 1<input name="topbar_one"></label><label>الشريط العلوي 2<input name="topbar_two"></label><label class="full">وصف أسفل الموقع<textarea name="footer_description"></textarea></label>
+
+        <div class="full identity-divider"></div>
+        <div class="full identity-heading"><div><h2>الهوية البصرية</h2><p>غيّر شعار RIDAA وأيقونة المتصفح مباشرة من لوحة الإدارة بدون تعديل الكود.</p></div></div>
+
+        <div class="full branding-grid">
+          <div class="branding-card">
+            <div class="branding-preview logo-preview-shell"><img id="brandLogoPreview" src="assets/logo-light.svg" alt="معاينة اللوغو"></div>
+            <div class="branding-card-content">
+              <h3>شعار المتجر</h3>
+              <p>يدعم SVG وPNG وWebP. يفضّل SVG بخلفية شفافة.</p>
+              <label class="upload-field branding-upload">رفع شعار جديد<input id="brandLogoFile" type="file" accept=".svg,.png,.webp,image/svg+xml,image/png,image/webp"></label>
+              <label>أو رابط الشعار<input name="logo_url" placeholder="https://..."></label>
+              <label class="toggle-setting"><input name="show_brand_text" type="checkbox"><span>إظهار اسم المتجر والنص بجانب اللوغو</span></label>
+              <div class="branding-size-grid"><label>عرض اللوغو على الكمبيوتر (px)<input name="logo_width_desktop" type="number" min="80" max="420" step="1" placeholder="240"></label><label>عرض اللوغو على الموبايل (px)<input name="logo_width_mobile" type="number" min="70" max="280" step="1" placeholder="165"></label></div>
+            </div>
+          </div>
+
+          <div class="branding-card favicon-card">
+            <div class="branding-preview favicon-preview-shell"><img id="faviconPreview" src="assets/logo.svg" alt="معاينة أيقونة الموقع"></div>
+            <div class="branding-card-content">
+              <h3>أيقونة الموقع</h3>
+              <p>تظهر في تبويب المتصفح وبجوار اسم الموقع. الأفضل صورة مربعة.</p>
+              <label class="upload-field branding-upload">رفع أيقونة جديدة<input id="faviconFile" type="file" accept=".svg,.png,.webp,.ico,image/svg+xml,image/png,image/webp,image/x-icon"></label>
+              <label>أو رابط الأيقونة<input name="favicon_url" placeholder="https://..."></label>
+            </div>
+          </div>
+        </div>
+        <div class="full branding-note" id="brandingSaveHint">اختيار ملف يعطيك معاينة فورية، ويُرفع فعليًا عند الضغط على حفظ.</div>
+        <div class="full"><button class="primary" type="submit">حفظ معلومات المتجر والهوية</button></div>
       </form>
     </section>
 

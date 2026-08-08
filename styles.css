@@ -25,7 +25,7 @@ img { max-width: 100%; display: block; }
 .header { height: 86px; position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; background: rgba(255, 253, 249, .9); border-bottom: 1px solid transparent; backdrop-filter: blur(18px); transition: .3s; }
 .header.scrolled { height: 74px; border-color: var(--line); box-shadow: 0 8px 30px rgba(0,0,0,.05); }
 .brand { display: flex; align-items: center; gap: 12px; min-width: 195px; }
-.brand img { width: 48px; height: 48px; }
+.brand img { width: min(var(--brand-logo-width, 240px), 30vw); max-height: 54px; height: auto; object-fit: contain; object-position: right center; display:block; }
 .brand strong { display: block; font-family: "Noto Kufi Arabic", sans-serif; font-size: 18px; line-height: 1.4; }
 .brand small { color: var(--ink-soft); font-size: 10px; letter-spacing: .6px; }
 .nav { display: flex; align-items: center; gap: 30px; }
@@ -161,7 +161,7 @@ img { max-width: 100%; display: block; }
 
 .footer { background: #1c1714; color: #fff; padding: 70px 7% 25px; }
 .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1.2fr; gap: 55px; }
-.footer-brand img { width: 175px; margin-bottom: 18px; }
+.footer-brand img { width: min(var(--brand-logo-width, 240px), 260px); max-height: 86px; height:auto; object-fit:contain; object-position:right center; margin-bottom:18px; }
 .footer p { color: rgba(255,255,255,.62); line-height: 1.9; max-width: 390px; }
 .footer h4 { font-family: "Noto Kufi Arabic"; margin: 0 0 20px; }
 .footer-grid > div:not(.footer-brand) { display: flex; flex-direction: column; gap: 13px; }
@@ -254,7 +254,7 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 600px) {
   .header { padding: 0 4%; }
-  .brand img { width: 40px; height: 40px; }
+  .brand img { width: min(var(--brand-logo-mobile-width, 165px), 44vw); max-height: 46px; height:auto; }
   .brand strong { font-size: 14px; }
   .icon-button { display: none; }
   .hero { padding-inline: 5%; }
@@ -861,3 +861,8 @@ body {
   #sizeGuideTable thead th { font-size:10.5px; }
   #sizeGuideTable tbody th span { font-size:9px; }
 }
+
+/* Dynamic brand identity */
+.brand.logo-only{min-width:0}
+.brand.logo-only #brandTextWrap{display:none}
+.brand.logo-only img{margin-inline:0}
