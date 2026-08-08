@@ -144,12 +144,12 @@ grant usage, select on all sequences in schema public to authenticated;
 
 -- First admin invitation. This email was prefilled from the account shown while deploying.
 -- Change it here if you want a different first administrator.
-insert into public.admin_invites(email,role) values ('Almshagbaabdallah@gmail.com','super_admin')
+insert into public.admin_invites(email,role) values ('almshagbaabdallah@gmail.com','super_admin')
 on conflict (email) do update set role='super_admin';
 
 -- If that user already exists in Supabase Auth before you run this SQL, promote it immediately too.
 insert into public.admins(user_id,email,role)
-select id,email,'super_admin' from auth.users where lower(email)=lower('Almshagbaabdallah@gmail.com')
+select id,email,'super_admin' from auth.users where lower(email)=lower('almshagbaabdallah@gmail.com')
 on conflict (user_id) do update set role='super_admin',active=true;
 
 -- Optional initial catalog. Only inserts if products is empty.
