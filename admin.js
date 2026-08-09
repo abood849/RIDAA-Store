@@ -52,6 +52,8 @@ function bind(){
   $('contentForm').addEventListener('submit',saveSettings);
   $('mediaUpload').addEventListener('change',uploadMedia);
   $('inviteForm').addEventListener('submit',inviteAdmin);
+  $('passwordForm').addEventListener('submit',changeOwnPassword);
+  $('removeSelfAdminBtn').onclick=removeSelfAdminAccess;
   $('brandLogoFile').addEventListener('change',e=>{ const file=e.target.files[0]; if(!file)return; try{validateBrandFile(file,'logo');previewObjectUrl($('brandLogoPreview'),file);}catch(err){toast(err.message);e.target.value='';} });
   $('faviconFile').addEventListener('change',e=>{ const file=e.target.files[0]; if(!file)return; try{validateBrandFile(file,'favicon');previewObjectUrl($('faviconPreview'),file);}catch(err){toast(err.message);e.target.value='';} });
   const logoUrlInput=$('settingsForm').elements.logo_url; if(logoUrlInput) logoUrlInput.addEventListener('input',()=>{ if(logoUrlInput.value.trim()) $('brandLogoPreview').src=logoUrlInput.value.trim(); });
@@ -67,14 +69,37 @@ async function login(e){
 
 async function signup(e){
   e.preventDefault(); msg('جارٍ إنشاء الحساب...',true);
-  const {data,error}=await sb.auth.signUp({email:$('signupEmail').value.trim(),password:$('signupPassword').value});
+  const email=$('signupEmail').value.trim().toLowerCase();
+  const {data,error}=await sb.auth.signUp({email,password:$('signupPassword').value});
   if(error) return msg(error.message);
-  if(data.user) msg('تم إنشاء الحساب. إذا كان تأكيد البريد مفعّلًا، افتح رسالة التأكيد ثم سجّل الدخول.',true);
+  if(data.session?.user){
+    msg('تم إنشاء الحساب. جارٍ فتح لوحة الإدارة...',true);
+    return enterAdmin(data.session.user);
+  }
+  if(data.user) msg('تم إنشاء الحساب. افتح رسالة تأكيد البريد إن كانت مفعّلة، ثم ارجع وسجّل الدخول. بعد الدخول ستُربط دعوتك تلقائيًا.',true);
+}
+
+async function fetchAdminRow(userId){
+  return sb.from('admins').select('*').eq('user_id',userId).eq('active',true).maybeSingle();
 }
 
 async function enterAdmin(user){
-  const {data,error}=await sb.from('admins').select('*').eq('user_id',user.id).eq('active',true).maybeSingle();
-  if(error||!data){ await sb.auth.signOut(); return msg('هذا الحساب ليس لديه صلاحية إدارة. يجب أن يكون البريد ضمن دعوات المدراء.'); }
+  let {data,error}=await fetchAdminRow(user.id);
+
+  // مهم: إذا كان المستخدم موجودًا مسبقًا في Supabase Auth ثم تمت دعوته لاحقًا،
+  // فإن trigger إنشاء المستخدم لن يعمل مرة ثانية. نطالب الدعوة هنا بعد تسجيل دخوله.
+  if(!error && !data){
+    const {error:claimError}=await sb.rpc('claim_my_admin_invite');
+    if(!claimError){
+      const retry=await fetchAdminRow(user.id);
+      data=retry.data; error=retry.error;
+    }
+  }
+
+  if(error||!data){
+    await sb.auth.signOut();
+    return msg('تم تسجيل الحساب في Supabase، لكن لا توجد له دعوة إدارة فعّالة. تأكد أن نفس البريد مضاف في «المدراء والصلاحيات».');
+  }
   currentUser=user; currentAdmin=data;
   $('authScreen').classList.add('hidden'); $('adminApp').classList.remove('hidden');
   $('welcomeText').textContent=`مرحبًا، ${data.email}`; $('roleBadge').textContent=data.role==='super_admin'?'Super Admin':'Admin';
@@ -297,13 +322,72 @@ window.deleteMedia=async enc=>{const name=decodeURIComponent(enc);if(!confirm('�
 
 async function loadAdmins(){
   if(currentAdmin?.role!=='super_admin')return;
-  const [{data:a},{data:i}]=await Promise.all([sb.from('admins').select('*').order('created_at'),sb.from('admin_invites').select('*').order('created_at',{ascending:false})]);
+  const [{data:a,error:adminsError},{data:i,error:invitesError}]=await Promise.all([
+    sb.from('admins').select('*').order('created_at'),
+    sb.from('admin_invites').select('*').order('created_at',{ascending:false})
+  ]);
+  if(adminsError) toast(adminsError.message);
+  if(invitesError) toast(invitesError.message);
   $('statAdmins').textContent=(a||[]).length;
-  $('adminsList').innerHTML=(a||[]).map(x=>`<div class="list-row"><div><b>${x.email}</b><br><small>${x.role}</small></div>${x.user_id===currentUser.id?'<span>أنت</span>':`<button onclick="removeAdmin('${x.user_id}')">حذف</button>`}</div>`).join('');
+  $('adminsList').innerHTML=(a||[]).map(x=>`<div class="list-row"><div><b>${x.email}</b><br><small>${x.role}${x.user_id===currentUser.id?' · أنت':''}</small></div>${x.user_id===currentUser.id?'<span class="self-badge">حسابك الحالي</span>':`<button class="danger-outline" onclick="removeAdmin('${x.user_id}')">إزالة الصلاحية</button>`}</div>`).join('')||'<p>لا يوجد مدراء.</p>';
   $('invitesList').innerHTML=(i||[]).map(x=>`<div class="list-row"><div><b>${x.email}</b><br><small>${x.role}</small></div><button onclick="removeInvite('${encodeURIComponent(x.email)}')">إلغاء الدعوة</button></div>`).join('')||'<p>لا توجد دعوات معلقة.</p>';
 }
-async function inviteAdmin(e){e.preventDefault();if(currentAdmin.role!=='super_admin')return;const payload={email:$('inviteEmail').value.trim().toLowerCase(),role:$('inviteRole').value,invited_by:currentUser.id};const {error}=await sb.from('admin_invites').upsert(payload);if(error)return toast(error.message);$('inviteEmail').value='';toast('تمت إضافة دعوة المدير');loadAdmins();}
-window.removeInvite=async enc=>{await sb.from('admin_invites').delete().eq('email',decodeURIComponent(enc));loadAdmins();};
-window.removeAdmin=async id=>{if(!confirm('إزالة صلاحية هذا المدير؟'))return;await sb.from('admins').delete().eq('user_id',id);loadAdmins();};
+
+async function inviteAdmin(e){
+  e.preventDefault();
+  if(currentAdmin.role!=='super_admin')return;
+  const payload={email:$('inviteEmail').value.trim().toLowerCase(),role:$('inviteRole').value,invited_by:currentUser.id};
+  const {error}=await sb.from('admin_invites').upsert(payload);
+  if(error)return toast(error.message);
+  $('inviteEmail').value='';
+  toast('تمت إضافة الدعوة. إذا كان البريد لديه حساب Auth مسبقًا، ستُفعّل صلاحية الإدارة تلقائيًا عند تسجيل دخوله القادم.');
+  loadAdmins();
+}
+
+window.removeInvite=async enc=>{
+  const {error}=await sb.from('admin_invites').delete().eq('email',decodeURIComponent(enc));
+  if(error)return toast(error.message);
+  toast('تم إلغاء الدعوة');
+  loadAdmins();
+};
+
+window.removeAdmin=async id=>{
+  if(!confirm('إزالة صلاحية هذا المدير؟ سيبقى حساب Supabase Auth موجودًا لكنه لن يستطيع دخول لوحة الإدارة.'))return;
+  const {error}=await sb.from('admins').delete().eq('user_id',id);
+  if(error)return toast(error.message);
+  toast('تمت إزالة صلاحية المدير');
+  loadAdmins();
+};
+
+async function changeOwnPassword(e){
+  e.preventDefault();
+  const f=e.currentTarget;
+  const password=f.elements.new_password.value;
+  const confirmPassword=f.elements.confirm_password.value;
+  if(password.length<8)return toast('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+  if(password!==confirmPassword)return toast('كلمتا المرور غير متطابقتين');
+  const btn=f.querySelector('button[type="submit"]');
+  btn.disabled=true; btn.textContent='جارٍ التغيير...';
+  const {error}=await sb.auth.updateUser({password});
+  btn.disabled=false; btn.textContent='تغيير كلمة المرور';
+  if(error)return toast(error.message);
+  f.reset();
+  toast('تم تغيير كلمة المرور بنجاح');
+}
+
+async function removeSelfAdminAccess(){
+  if(!currentUser||!currentAdmin)return;
+  if(currentAdmin.role==='super_admin'){
+    const {data,error}=await sb.from('admins').select('user_id').eq('role','super_admin').eq('active',true);
+    if(error)return toast(error.message);
+    if((data||[]).length<=1)return toast('لا يمكن إزالة آخر Super Admin. أضف Super Admin آخر أولًا.');
+  }
+  const ok=confirm('هل تريد إزالة صلاحية الإدارة عن حسابك؟ ستُسجّل خروجك ولن تستطيع دخول اللوحة إلا إذا أعاد Super Admin دعوتك.');
+  if(!ok)return;
+  const {error}=await sb.from('admins').delete().eq('user_id',currentUser.id);
+  if(error)return toast(error.message);
+  await sb.auth.signOut();
+  location.reload();
+}
 
 init();

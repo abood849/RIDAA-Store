@@ -93,7 +93,27 @@
 
     <section id="view-media" class="view"><div class="panel"><div class="panel-head"><div><h2>الصور والوسائط</h2><p>رفع صور جديدة أو حذف الصور التي رفعتها من لوحة التحكم.</p></div><label class="upload-btn">+ رفع صور<input id="mediaUpload" type="file" accept="image/*" multiple hidden></label></div><div id="mediaGrid" class="media-grid"></div></div></section>
 
-    <section id="view-admins" class="view"><div class="panel"><div class="panel-head"><div><h2>المدراء والصلاحيات</h2><p>المدير الرئيسي فقط يستطيع دعوة أو حذف المدراء.</p></div></div><form id="inviteForm" class="inline-form"><input id="inviteEmail" type="email" placeholder="email@example.com" required><select id="inviteRole"><option value="admin">Admin</option><option value="super_admin">Super Admin</option></select><button class="primary small">إضافة دعوة مدير</button></form><h3>المدراء الحاليون</h3><div id="adminsList" class="list"></div><h3>الدعوات</h3><div id="invitesList" class="list"></div></div></section>
+    <section id="view-admins" class="view">
+      <div class="panel">
+        <div class="panel-head"><div><h2>المدراء والصلاحيات</h2><p>المدير الرئيسي فقط يستطيع دعوة أو إزالة صلاحيات المدراء الآخرين.</p></div></div>
+        <form id="inviteForm" class="inline-form"><input id="inviteEmail" type="email" placeholder="email@example.com" required><select id="inviteRole"><option value="admin">Admin</option><option value="super_admin">Super Admin</option></select><button class="primary small">إضافة دعوة مدير</button></form>
+        <h3>المدراء الحاليون</h3><div id="adminsList" class="list"></div>
+        <h3>الدعوات</h3><div id="invitesList" class="list"></div>
+      </div>
+
+      <div class="panel account-security-panel">
+        <div class="panel-head"><div><h2>أمان حسابي</h2><p>تغيير كلمة مرور حساب الإدارة الحالي أو إزالة صلاحيتك من لوحة الإدارة.</p></div></div>
+        <form id="passwordForm" class="password-form">
+          <label>كلمة المرور الجديدة<input name="new_password" type="password" minlength="8" autocomplete="new-password" required></label>
+          <label>تأكيد كلمة المرور<input name="confirm_password" type="password" minlength="8" autocomplete="new-password" required></label>
+          <button class="primary" type="submit">تغيير كلمة المرور</button>
+        </form>
+        <div class="danger-zone">
+          <div><b>إزالة صلاحيتي من الإدارة</b><p>هذا يلغي وصولك للوحة الإدارة، لكنه لا يحذف مستخدم Supabase Auth نفسه.</p></div>
+          <button id="removeSelfAdminBtn" type="button" class="danger-button">إزالة صلاحيتي</button>
+        </div>
+      </div>
+    </section>
   </main>
 </div>
 
